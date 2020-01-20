@@ -40,13 +40,13 @@ This is a C++ framework for variant **weighted** network embedding techniques. W
 In the near future, we will redesign the framework making some solid APIs for fast development on different network embedding techniques.
 
 # Developed Environment
-- g++ > 4.9 (In macOS, it needs OpenMP-enabled compilers. e.g. brew reinstall gcc6 --without-multilib)
+-  VS2017 or newer (Microsoft C/C++ Optimizing Compiler Version 19)
 
 # Compilation
 ```
-$ git clone https://github.com/cnclabs/smore
-$ cd smore
-$ make
+(open Visual Studio 2017 Developer Command Prompt)
+> cd smore
+> compile_all.bat
 ```
 
 # Task
@@ -72,15 +72,15 @@ userC -0.156576 -0.3505 0.213454 0.10476 0.259673
 # Command Line Interface
 Directly call the execution file to see the usage like:
 ```
-./cli/deepwalk
-./cli/walklets
-./cli/line
-./cli/hpe
-./cli/app
-./cli/mf
-./cli/bpr
-./cli/warp
-./cli/hoprec
+bin\deepwalk.exe
+bin\walklets.exe
+bin\line.exe
+bin\hpe.exe
+bin\app.exe
+bin\mf.exe
+bin\bpr.exe
+bin\warp.exe
+bin\hoprec.exe
 ```
 then you will see the options description like:
 ```
@@ -106,16 +106,15 @@ Options Description:
         -alpha <float>
                 Init learning rate; default is 0.025
 Usage:
-./deepwalk -train net.txt -save rep.txt -undirected 1 -dimensions 64 -walk_times 10 -walk_steps 40 -window_size 5 -negative_samples 5 -alpha 0.025 -threads 1
+deepwalk.exe -train net.txt -save rep.txt -undirected 1 -dimensions 64 -walk_times 10 -walk_steps 40 -window_size 5 -negative_samples 5 -alpha 0.025 -threads 1
 ```
 
 # Example Script
-This shell script will help obtain the representations of the Youtube links in [Youtube-links](http://socialnetworks.mpi-sws.mpg.de/data/youtube-links.txt.gz) dataset.
+This command will help obtain the representations of the Youtube links in [Youtube-links](http://socialnetworks.mpi-sws.mpg.de/data/youtube-links.txt.gz) dataset.
 ```sh
-cd example
-sh train_youtube.sh
+bin\deepwalk.exe -train example\net.txt -save rep.txt -threads 1
 ```
-Changing the number of threads in *train_youtube.sh* could speedup the process.
+Changing the number of threads (*-threads*) could speedup the process.
 
 # Related Work
 You can find related work from [awesome-network-embedding](https://github.com/chihming/awesome-network-embedding).
