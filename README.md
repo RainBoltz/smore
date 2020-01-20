@@ -11,7 +11,7 @@
 
 # SMORe
 
-We're now refactoring the project. A complete version will be released in the near future.
+**This FORK is a Windows version of SMORe.**
 
 <img src="http://cherry.cs.nccu.edu.tw/~g10018/portfolio/images/smore.png" width="480">
 

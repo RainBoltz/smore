@@ -25,7 +25,7 @@ using namespace std;
 #include <utility>
 #include <stdio.h>
 #include <omp.h>
-#include <dirent.h>
+#include "dirent.h"
 #include "random.h"
 #include "util.h"
 
@@ -37,7 +37,7 @@ using namespace std;
 #define MAX_NEG 1e8
 
 struct cmp_char {
-    bool operator()(char const *a, char const *b) {
+    bool operator()(char const *a, char const *b) const {
         return strcmp(a, b) < 0;
     }
 };
