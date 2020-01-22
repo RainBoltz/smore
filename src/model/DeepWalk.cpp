@@ -94,7 +94,6 @@ void DeepWalk::Train(int walk_times, int walk_steps, int window_size, int negati
         #pragma omp parallel for
         for (long vid=0; vid<pnet.MAX_vid; ++vid)
         {
-
             vector<long> walks = pnet.RandomWalk(random_keys[vid], walk_steps);
             vector<vector<long>> train_data = pnet.SkipGrams(walks, window_size, 0);
             pnet.UpdatePairs(w_vertex, w_context, train_data[0], train_data[1], dim, negative_samples, _alpha);

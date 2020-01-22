@@ -29,6 +29,9 @@ using namespace std;
 #include "random.h"
 #include "util.h"
 
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+
 #define MONITOR 10000
 #define POWER_SAMPLE 0.75
 #define HASH_TABLE_SIZE 30000000

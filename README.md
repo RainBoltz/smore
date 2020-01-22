@@ -40,7 +40,7 @@ This is a C++ framework for variant **weighted** network embedding techniques. W
 In the near future, we will redesign the framework making some solid APIs for fast development on different network embedding techniques.
 
 # Developed Environment
--  VS2017 or newer (Microsoft C/C++ Optimizing Compiler Version 19)
+-  VS2017 x64, or newer (Microsoft C/C++ Optimizing Compiler Version >= 19)
 
 # Compilation
 ```
