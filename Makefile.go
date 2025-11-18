@@ -6,9 +6,9 @@ BINDIR := bin
 # Go build flags
 GOFLAGS := -ldflags="-s -w"
 
-.PHONY: all clean deepwalk node2vec fastrp transe rotate sne metapath2vec han line bpr hpe test
+.PHONY: all clean deepwalk node2vec fastrp transe rotate sne metapath2vec han ctdne line bpr hpe test
 
-all: deepwalk node2vec fastrp transe rotate sne metapath2vec han line bpr hpe
+all: deepwalk node2vec fastrp transe rotate sne metapath2vec han ctdne line bpr hpe
 
 # Create bin directory
 $(BINDIR):
@@ -54,6 +54,11 @@ han: $(BINDIR)
 	@echo "Building han..."
 	go build $(GOFLAGS) -o $(BINDIR)/han ./cmd/han
 
+# Build CTDNE
+ctdne: $(BINDIR)
+	@echo "Building ctdne..."
+	go build $(GOFLAGS) -o $(BINDIR)/ctdne ./cmd/ctdne
+
 # Build LINE
 line: $(BINDIR)
 	@echo "Building line..."
@@ -88,6 +93,7 @@ install:
 	go install ./cmd/sne
 	go install ./cmd/metapath2vec
 	go install ./cmd/han
+	go install ./cmd/ctdne
 	go install ./cmd/line
 	go install ./cmd/bpr
 	go install ./cmd/hpe

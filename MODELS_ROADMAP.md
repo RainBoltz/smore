@@ -237,8 +237,8 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 
 ## Priority 4: Temporal/Dynamic Models
 
-### 9. CTDNE (Continuous-Time Dynamic Network Embeddings) ⭐⭐⭐
-**Status**: Foundation for Temporal Graphs
+### 9. CTDNE (Continuous-Time Dynamic Network Embeddings) ⭐⭐⭐ ✅
+**Status**: ✅ IMPLEMENTED - Foundation for Temporal Graphs
 **Complexity**: Medium-High
 **Performance**: Good
 
@@ -246,6 +246,12 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 - Handles time-evolving graphs
 - Time-constrained temporal random walks
 - Extension of Node2Vec for temporal networks
+
+**Implementation Details:**
+- Temporal graph data structure with time-stamped edges
+- Time-respecting random walks (each step after previous)
+- Activity-weighted negative sampling
+- Configurable time window for temporal constraints
 
 **Use Cases:**
 - Social network evolution
@@ -289,9 +295,10 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 5. ✅ **Signed Networks (SNE)** - Unique capability
 6. ✅ **Metapath2Vec** - Heterogeneous graphs
 
-### Phase 4: Cutting Edge (4-6 weeks) 🚧 IN PROGRESS
+### Phase 4: Cutting Edge (4-6 weeks) ✅ COMPLETE
 7. ✅ **HAN** - Advanced heterogeneous model
-8. **CTDNE/JODIE** - Temporal models (Optional)
+8. ✅ **CTDNE** - Temporal graph embeddings
+9. **JODIE** - Advanced temporal model (Optional - requires RNN)
 
 ---
 
@@ -307,7 +314,7 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 | ComplEx | 📝 | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | Metapath2Vec | ✅ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | HAN | ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| CTDNE | 📝 | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| CTDNE | ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 | JODIE | 📝 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 
 ---
@@ -362,7 +369,7 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 
 **Implementation Progress:**
 
-✅ **Completed (7 models):**
+✅ **Completed (8 models):**
 1. ✅ **Node2Vec** - Industry standard with biased random walks
 2. ✅ **FastRP** - Ultra-fast random projection embeddings
 3. ✅ **TransE** - Foundation for knowledge graph embeddings
@@ -370,13 +377,15 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 5. ✅ **SNE** - Signed network embeddings (positive/negative edges)
 6. ✅ **Metapath2Vec** - Heterogeneous graph embeddings
 7. ✅ **HAN** - Hierarchical attention for heterogeneous graphs
+8. ✅ **CTDNE** - Temporal graph embeddings for time-evolving networks
 
 **Optional Extensions:**
-- **CTDNE/JODIE** - Temporal graph embeddings (for time-evolving networks)
+- **JODIE** - Advanced temporal model (requires RNN implementation)
 - **ComplEx** - Alternative KG embedding approach
 
-SMORe-Go now offers comprehensive coverage across multiple graph types:
+SMORe-Go now offers comprehensive coverage across all major graph types:
 - Homogeneous graphs (Node2Vec, FastRP)
 - Knowledge graphs (TransE, RotatE)
 - Signed networks (SNE)
 - Heterogeneous graphs (Metapath2Vec, HAN)
+- Temporal/dynamic graphs (CTDNE)
