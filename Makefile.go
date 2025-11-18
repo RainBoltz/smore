@@ -6,9 +6,9 @@ BINDIR := bin
 # Go build flags
 GOFLAGS := -ldflags="-s -w"
 
-.PHONY: all clean deepwalk line bpr hpe test
+.PHONY: all clean deepwalk node2vec line bpr hpe test
 
-all: deepwalk line bpr hpe
+all: deepwalk node2vec line bpr hpe
 
 # Create bin directory
 $(BINDIR):
@@ -18,6 +18,11 @@ $(BINDIR):
 deepwalk: $(BINDIR)
 	@echo "Building deepwalk..."
 	go build $(GOFLAGS) -o $(BINDIR)/deepwalk ./cmd/deepwalk
+
+# Build Node2Vec
+node2vec: $(BINDIR)
+	@echo "Building node2vec..."
+	go build $(GOFLAGS) -o $(BINDIR)/node2vec ./cmd/node2vec
 
 # Build LINE
 line: $(BINDIR)
@@ -46,6 +51,7 @@ clean:
 # Install binaries to GOPATH/bin
 install:
 	go install ./cmd/deepwalk
+	go install ./cmd/node2vec
 	go install ./cmd/line
 	go install ./cmd/bpr
 	go install ./cmd/hpe

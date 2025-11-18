@@ -29,6 +29,7 @@ To match C++ performance, this implementation includes:
 Currently implemented models:
 
 - **DeepWalk**: Online learning of social representations
+- **Node2Vec**: Scalable feature learning with biased random walks (p, q parameters)
 - **LINE**: Large-scale Information Network Embedding (1st and 2nd order)
 - **BPR**: Bayesian Personalized Ranking from implicit feedback
 - **HPE**: Heterogeneous Preference Embedding
@@ -51,6 +52,7 @@ make -f Makefile.go all
 
 # Or build specific models
 make -f Makefile.go deepwalk
+make -f Makefile.go node2vec
 make -f Makefile.go line
 make -f Makefile.go bpr
 make -f Makefile.go hpe
@@ -72,6 +74,32 @@ Binaries will be created in the `bin/` directory.
   -alpha 0.025 \
   -threads 4
 ```
+
+### Node2Vec
+
+Node2Vec extends DeepWalk with biased random walks controlled by p and q parameters:
+
+```bash
+# Standard (balanced BFS-DFS)
+./bin/node2vec -train net.txt -save rep.txt \
+  -p 1 -q 1 \
+  -dimensions 64 \
+  -walk_times 10 \
+  -walk_steps 80 \
+  -window_size 10 \
+  -negative_samples 5 \
+  -threads 4
+
+# For homophily (local structure, BFS-like)
+./bin/node2vec -train net.txt -save rep.txt -p 1 -q 2
+
+# For structural equivalence (global structure, DFS-like)
+./bin/node2vec -train net.txt -save rep.txt -p 1 -q 0.5
+```
+
+**Parameters:**
+- `p`: Return parameter (higher = less likely to return to previous node)
+- `q`: In-out parameter (q > 1 = BFS-like, q < 1 = DFS-like)
 
 ### LINE
 
@@ -199,8 +227,15 @@ make -f Makefile.go clean
 
 ## Future Work
 
-Models to be implemented:
+See [MODELS_ROADMAP.md](MODELS_ROADMAP.md) for a comprehensive analysis of modern models to implement.
 
+**High Priority:**
+- FastRP (Fast Random Projection) - Ultra-fast, no training
+- TransE/RotatE - Knowledge graph embeddings
+- SNE/SIDE - Signed network embeddings
+- Metapath2Vec - Heterogeneous graphs
+
+**Original C++ Models Still To Port:**
 - Walklets
 - APP (Asymmetric Proximity Preserving)
 - MF (Matrix Factorization)
