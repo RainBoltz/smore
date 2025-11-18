@@ -34,10 +34,10 @@ type Node2Vec struct {
 
 ---
 
-### 2. FastRP (Fast Random Projection) ⭐⭐⭐⭐⭐
-**Status**: Production-Ready (Neo4j's default)
+### 2. FastRP (Fast Random Projection) ⭐⭐⭐⭐⭐ ✅
+**Status**: ✅ IMPLEMENTED - Production-Ready (Neo4j's default)
 **Complexity**: Low
-**Performance**: Extremely Fast (4,000x faster than Node2Vec)
+**Performance**: Extremely Fast (75,000x faster than Node2Vec)
 
 **Why implement it:**
 - **Speed**: 75,000x faster than Node2Vec with comparable accuracy
@@ -276,9 +276,9 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 
 ## Recommended Implementation Order
 
-### Phase 1: Quick Wins (1-2 weeks)
-1. **Node2Vec** - Natural extension of DeepWalk
-2. **FastRP** - Ultra-fast, no training needed
+### Phase 1: Quick Wins (1-2 weeks) ✅ COMPLETE
+1. ✅ **Node2Vec** - Natural extension of DeepWalk
+2. ✅ **FastRP** - Ultra-fast, no training needed
 
 ### Phase 2: Knowledge Graphs (2-3 weeks)
 3. **TransE** - Simple foundation
