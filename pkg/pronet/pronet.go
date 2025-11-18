@@ -218,7 +218,7 @@ func (pn *ProNet) buildVertexAliasTable() {
 	for i := int64(0); i < pn.MaxVid; i++ {
 		distribution[i] = pn.Vertices[i].OutDegree
 	}
-	pn.VertexAT = buildAliasMethod(distribution, 1.0)
+	pn.VertexAT = BuildAliasMethod(distribution, 1.0)
 }
 
 // buildContextAliasTable builds alias table for context sampling
@@ -227,7 +227,7 @@ func (pn *ProNet) buildContextAliasTable() {
 	for i := int64(0); i < pn.MaxVid; i++ {
 		distribution[i] = pn.Contexts[i].InDegree
 	}
-	pn.ContextAT = buildAliasMethod(distribution, 1.0)
+	pn.ContextAT = BuildAliasMethod(distribution, 1.0)
 }
 
 // buildNegativeAliasTable builds alias table for negative sampling
@@ -237,7 +237,7 @@ func (pn *ProNet) buildNegativeAliasTable() {
 		degree := pn.Vertices[i].InDegree + pn.Vertices[i].OutDegree
 		distribution[i] = degree
 	}
-	pn.NegativeAT = buildAliasMethod(distribution, PowerSample)
+	pn.NegativeAT = BuildAliasMethod(distribution, PowerSample)
 }
 
 // SourceSample samples a source vertex

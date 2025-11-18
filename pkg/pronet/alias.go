@@ -5,9 +5,9 @@ import (
 	"math/rand"
 )
 
-// buildAliasMethod builds alias table for O(1) weighted sampling
+// BuildAliasMethod builds alias table for O(1) weighted sampling
 // This implements the alias method (Walker's alias method) for efficient sampling
-func buildAliasMethod(distribution []float64, power float64) []AliasTable {
+func BuildAliasMethod(distribution []float64, power float64) []AliasTable {
 	n := len(distribution)
 	if n == 0 {
 		return nil
