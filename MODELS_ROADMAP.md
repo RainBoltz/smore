@@ -160,8 +160,8 @@ func (kg *KnowledgeGraph) RotateScore(h, r, t ComplexVector) float64 {
 
 ---
 
-### 6. ComplEx ⭐⭐⭐⭐
-**Status**: Popular KG Model
+### 6. ComplEx ⭐⭐⭐⭐ ✅
+**Status**: ✅ IMPLEMENTED - Popular KG Model
 **Complexity**: Medium
 **Performance**: Very Good
 
@@ -170,8 +170,16 @@ func (kg *KnowledgeGraph) RotateScore(h, r, t ComplexVector) float64 {
 - Handles asymmetric relations
 - Proven effectiveness on FB15k, WN18 benchmarks
 
-**Implementation:**
-Go has native `complex128` support, making this straightforward.
+**Implementation Details:**
+- Native Go `complex128` support for complex-valued embeddings
+- Trilinear scoring: Re(<h, r, conj(t)>)
+- Margin-based ranking loss with negative sampling
+- Can model symmetric, antisymmetric, and inverse relations
+- More expressive than TransE
+
+**References:**
+- "Complex Embeddings for Simple Link Prediction" (ICML 2016)
+- https://arxiv.org/abs/1606.06357
 
 ---
 
@@ -315,7 +323,7 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 | SNE/SIDE | ✅ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 | TransE | ✅ | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | RotatE | ✅ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| ComplEx | 📝 | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| ComplEx | ✅ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | Metapath2Vec | ✅ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | HAN | ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | CTDNE | ✅ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
@@ -373,25 +381,23 @@ func (g *HeteroGraph) MetaPathWalk(startNode Node, metapath MetaPath, steps int)
 
 **Implementation Progress:**
 
-✅ **Completed (9 models) - ALL PHASES COMPLETE:**
+✅ **Completed (10 models) - ALL PHASES COMPLETE + BONUS:**
 1. ✅ **Node2Vec** - Industry standard with biased random walks
 2. ✅ **FastRP** - Ultra-fast random projection embeddings
 3. ✅ **TransE** - Foundation for knowledge graph embeddings
 4. ✅ **RotatE** - State-of-the-art KG model with complex rotations
-5. ✅ **SNE** - Signed network embeddings (positive/negative edges)
-6. ✅ **Metapath2Vec** - Heterogeneous graph embeddings
-7. ✅ **HAN** - Hierarchical attention for heterogeneous graphs
-8. ✅ **CTDNE** - Temporal graph embeddings for time-evolving networks
-9. ✅ **JODIE** - Advanced temporal model with RNN-based dynamics
-
-**Future Extensions:**
-- **ComplEx** - Alternative KG embedding approach (optional)
+5. ✅ **ComplEx** - Complex-valued KG embeddings (handles symmetric relations)
+6. ✅ **SNE** - Signed network embeddings (positive/negative edges)
+7. ✅ **Metapath2Vec** - Heterogeneous graph embeddings
+8. ✅ **HAN** - Hierarchical attention for heterogeneous graphs
+9. ✅ **CTDNE** - Temporal graph embeddings for time-evolving networks
+10. ✅ **JODIE** - Advanced temporal model with RNN-based dynamics
 
 SMORe-Go now offers **complete coverage** across all major graph types:
 - **Homogeneous graphs**: Node2Vec, FastRP
-- **Knowledge graphs**: TransE, RotatE
+- **Knowledge graphs**: TransE, RotatE, ComplEx (3 complementary approaches!)
 - **Signed networks**: SNE
 - **Heterogeneous graphs**: Metapath2Vec, HAN
 - **Temporal/dynamic graphs**: CTDNE, JODIE
 
-**Achievement**: Complete implementation of modern graph embedding techniques with state-of-the-art models for every major graph type!
+**Achievement**: Complete implementation of modern graph embedding techniques with state-of-the-art models for every major graph type! **10 models total**, covering all use cases from simple homogeneous networks to complex temporal interactions!

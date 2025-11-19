@@ -6,9 +6,9 @@ BINDIR := bin
 # Go build flags
 GOFLAGS := -ldflags="-s -w"
 
-.PHONY: all clean deepwalk node2vec fastrp transe rotate sne metapath2vec han ctdne jodie line bpr hpe test
+.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe test
 
-all: deepwalk node2vec fastrp transe rotate sne metapath2vec han ctdne jodie line bpr hpe
+all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe
 
 # Create bin directory
 $(BINDIR):
@@ -38,6 +38,11 @@ transe: $(BINDIR)
 rotate: $(BINDIR)
 	@echo "Building rotate..."
 	go build $(GOFLAGS) -o $(BINDIR)/rotate ./cmd/rotate
+
+# Build ComplEx
+complex: $(BINDIR)
+	@echo "Building complex..."
+	go build $(GOFLAGS) -o $(BINDIR)/complex ./cmd/complex
 
 # Build SNE
 sne: $(BINDIR)
@@ -95,6 +100,7 @@ install:
 	go install ./cmd/fastrp
 	go install ./cmd/transe
 	go install ./cmd/rotate
+	go install ./cmd/complex
 	go install ./cmd/sne
 	go install ./cmd/metapath2vec
 	go install ./cmd/han
