@@ -6,9 +6,9 @@ BINDIR := bin
 # Go build flags
 GOFLAGS := -ldflags="-s -w"
 
-.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe test
+.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt sasrec gsasrec recdenoiser test
 
-all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe
+all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt sasrec gsasrec recdenoiser
 
 # Create bin directory
 $(BINDIR):
@@ -84,6 +84,31 @@ hpe: $(BINDIR)
 	@echo "Building hpe..."
 	go build $(GOFLAGS) -o $(BINDIR)/hpe ./cmd/hpe
 
+# Build TextGCN
+textgcn: $(BINDIR)
+	@echo "Building textgcn..."
+	go build $(GOFLAGS) -o $(BINDIR)/textgcn ./cmd/textgcn
+
+# Build SkewOpt
+skewopt: $(BINDIR)
+	@echo "Building skewopt..."
+	go build $(GOFLAGS) -o $(BINDIR)/skewopt ./cmd/skewopt
+
+# Build SASRec
+sasrec: $(BINDIR)
+	@echo "Building sasrec..."
+	go build $(GOFLAGS) -o $(BINDIR)/sasrec ./cmd/sasrec
+
+# Build gSASRec (RecSys 2023 Best Paper)
+gsasrec: $(BINDIR)
+	@echo "Building gsasrec (RecSys 2023 Best Paper)..."
+	go build $(GOFLAGS) -o $(BINDIR)/gsasrec ./cmd/gsasrec
+
+# Build Rec-Denoiser (RecSys 2022 Best Paper)
+recdenoiser: $(BINDIR)
+	@echo "Building recdenoiser (RecSys 2022 Best Paper)..."
+	go build $(GOFLAGS) -o $(BINDIR)/recdenoiser ./cmd/recdenoiser
+
 # Run tests
 test:
 	go test -v ./...
@@ -109,6 +134,11 @@ install:
 	go install ./cmd/line
 	go install ./cmd/bpr
 	go install ./cmd/hpe
+	go install ./cmd/textgcn
+	go install ./cmd/skewopt
+	go install ./cmd/sasrec
+	go install ./cmd/gsasrec
+	go install ./cmd/recdenoiser
 
 # Format code
 fmt:
