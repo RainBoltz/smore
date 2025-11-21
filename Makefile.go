@@ -6,9 +6,9 @@ BINDIR := bin
 # Go build flags
 GOFLAGS := -ldflags="-s -w"
 
-.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt test
+.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt sasrec gsasrec test
 
-all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt
+all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt sasrec gsasrec
 
 # Create bin directory
 $(BINDIR):
@@ -94,6 +94,16 @@ skewopt: $(BINDIR)
 	@echo "Building skewopt..."
 	go build $(GOFLAGS) -o $(BINDIR)/skewopt ./cmd/skewopt
 
+# Build SASRec
+sasrec: $(BINDIR)
+	@echo "Building sasrec..."
+	go build $(GOFLAGS) -o $(BINDIR)/sasrec ./cmd/sasrec
+
+# Build gSASRec (RecSys 2023 Best Paper)
+gsasrec: $(BINDIR)
+	@echo "Building gsasrec (RecSys 2023 Best Paper)..."
+	go build $(GOFLAGS) -o $(BINDIR)/gsasrec ./cmd/gsasrec
+
 # Run tests
 test:
 	go test -v ./...
@@ -121,6 +131,8 @@ install:
 	go install ./cmd/hpe
 	go install ./cmd/textgcn
 	go install ./cmd/skewopt
+	go install ./cmd/sasrec
+	go install ./cmd/gsasrec
 
 # Format code
 fmt:
