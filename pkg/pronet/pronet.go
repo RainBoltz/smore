@@ -32,6 +32,11 @@ type Context struct {
 	InDegree float64
 }
 
+// Field represents vertex field metadata (for TextGCN)
+type Field struct {
+	Fields []int64 // Field types for each vertex
+}
+
 // AliasTable for efficient weighted sampling
 type AliasTable struct {
 	Alias int64
@@ -50,6 +55,9 @@ type ProNet struct {
 	// Hash tables for vertex name mapping
 	VertexHash    map[string]int64
 	VertexKeys    []string
+
+	// Field metadata for heterogeneous graphs (TextGCN)
+	Fields        []Field
 
 	// Cached sigmoid table for performance
 	CachedSigmoid []float64
@@ -330,4 +338,70 @@ func (pn *ProNet) GetVertexName(vid int64) string {
 		return ""
 	}
 	return pn.VertexKeys[vid]
+}
+
+// LoadFieldMeta loads field metadata from a file
+// File format: vertex_name field_type (e.g., "doc1 0", "word1 2")
+func (pn *ProNet) LoadFieldMeta(filename string) error {
+	fmt.Println("Meta Data Loading:")
+
+	file, err := os.Open(filename)
+	if err != nil {
+		return fmt.Errorf("failed to open field meta file: %v", err)
+	}
+	defer file.Close()
+
+	// Initialize fields array
+	pn.Fields = make([]Field, pn.MaxVid)
+	for i := range pn.Fields {
+		pn.Fields[i].Fields = make([]int64, 1)
+		pn.Fields[i].Fields[0] = -1 // Default: no field assigned
+	}
+
+	scanner := bufio.NewScanner(file)
+	lineCount := int64(0)
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+
+		parts := strings.Fields(line)
+		if len(parts) != 2 {
+			fmt.Printf("\tWarning: line %d has wrong format, skipping\n", lineCount+1)
+			continue
+		}
+
+		vertexName := parts[0]
+		fieldType, err := strconv.ParseInt(parts[1], 10, 64)
+		if err != nil {
+			fmt.Printf("\tWarning: invalid field type on line %d, skipping\n", lineCount+1)
+			continue
+		}
+
+		// Find vertex ID
+		vid, exists := pn.VertexHash[vertexName]
+		if !exists {
+			fmt.Printf("\tWarning: vertex '%s' not found in network, skipping\n", vertexName)
+			continue
+		}
+
+		// Assign field type
+		pn.Fields[vid].Fields[0] = fieldType
+
+		lineCount++
+		if lineCount%Monitor == 0 {
+			fmt.Printf("\tProgress: %.2f %%\r", float64(lineCount)*100.0/float64(pn.MaxVid))
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("error reading field meta file: %v", err)
+	}
+
+	fmt.Printf("\tProgress: 100.00 %%\n")
+	fmt.Printf("\t# of meta data: %d\n", lineCount)
+
+	return nil
 }

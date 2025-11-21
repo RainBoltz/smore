@@ -6,9 +6,9 @@ BINDIR := bin
 # Go build flags
 GOFLAGS := -ldflags="-s -w"
 
-.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe test
+.PHONY: all clean deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt test
 
-all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe
+all: deepwalk node2vec fastrp transe rotate complex sne metapath2vec han ctdne jodie line bpr hpe textgcn skewopt
 
 # Create bin directory
 $(BINDIR):
@@ -84,6 +84,16 @@ hpe: $(BINDIR)
 	@echo "Building hpe..."
 	go build $(GOFLAGS) -o $(BINDIR)/hpe ./cmd/hpe
 
+# Build TextGCN
+textgcn: $(BINDIR)
+	@echo "Building textgcn..."
+	go build $(GOFLAGS) -o $(BINDIR)/textgcn ./cmd/textgcn
+
+# Build SkewOpt
+skewopt: $(BINDIR)
+	@echo "Building skewopt..."
+	go build $(GOFLAGS) -o $(BINDIR)/skewopt ./cmd/skewopt
+
 # Run tests
 test:
 	go test -v ./...
@@ -109,6 +119,8 @@ install:
 	go install ./cmd/line
 	go install ./cmd/bpr
 	go install ./cmd/hpe
+	go install ./cmd/textgcn
+	go install ./cmd/skewopt
 
 # Format code
 fmt:

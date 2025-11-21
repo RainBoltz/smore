@@ -175,3 +175,103 @@ func (pn *ProNet) UpdateCBOW(
 		}
 	}
 }
+
+// UpdateSBPRPair updates embeddings using Skewed Bayesian Personalized Ranking
+// This implements the Skew-OPT algorithm with parameters:
+// - xi: skewness parameter
+// - omega: proximity weight
+// - eta: balance parameter (exponent)
+func (pn *ProNet) UpdateSBPRPair(
+	wVertex, wContext [][]float64,
+	vertex, contextI int64,
+	dim int,
+	reg, xi, omega float64,
+	eta int,
+	alpha float64,
+	rng *rand.Rand,
+) {
+	vertexErr := make([]float64, dim)
+	contextErr := make([]float64, dim)
+	contextVec := make([]float64, dim)
+
+	updateCount := 0
+
+	// Sample 16 negative contexts and update
+	for n := 0; n < 16; n++ {
+		contextJ := pn.NegativeSample(rng)
+
+		// Reset context error and compute difference vector
+		for d := 0; d < dim; d++ {
+			contextErr[d] = 0.0
+			contextVec[d] = wContext[contextI][d] - wContext[contextJ][d]
+		}
+
+		// Apply skewed BPR SGD
+		if pn.optSBPRSGD(wVertex[vertex], contextVec, xi, omega, eta, alpha, vertexErr, contextErr) {
+			// Apply L2 regularization and update
+			for d := 0; d < dim; d++ {
+				wContext[contextI][d] -= alpha * 0.01 * wContext[contextI][d]
+				wContext[contextJ][d] -= alpha * 0.01 * wContext[contextJ][d]
+
+				wContext[contextI][d] += contextErr[d]
+				wContext[contextJ][d] -= contextErr[d]
+			}
+			updateCount++
+		}
+	}
+
+	// Update vertex embedding with averaged gradient
+	if updateCount > 0 {
+		for d := 0; d < dim; d++ {
+			wVertex[vertex][d] -= alpha * 0.01 * wVertex[vertex][d]
+			wVertex[vertex][d] += vertexErr[d] / float64(updateCount)
+		}
+	}
+}
+
+// optSBPRSGD performs the core Skewed BPR SGD optimization
+func (pn *ProNet) optSBPRSGD(
+	wVertex, wContext []float64,
+	xi, omega float64,
+	eta int,
+	alpha float64,
+	lossVertex, lossContext []float64,
+) bool {
+	dim := len(wVertex)
+
+	// Compute dot product
+	f := 0.0
+	for d := 0; d < dim; d++ {
+		f += wVertex[d] * wContext[d]
+	}
+
+	// Transform score with skewness and proximity parameters
+	g := (f - xi) / omega
+	if g > 2.0 {
+		return false
+	}
+	if g < -2.0 {
+		g = -2.0
+	}
+
+	// Apply eta power: g^eta
+	gInSigmoid := 1.0
+	for i := 0; i < eta; i++ {
+		gInSigmoid *= g
+	}
+	gChainDiff := gInSigmoid / g
+
+	// Apply sigmoid and chain rule for gradient
+	g = pn.FastSigmoid(-1.0*gInSigmoid) * gChainDiff / omega
+	g *= alpha
+
+	// Compute and accumulate gradients
+	for d := 0; d < dim; d++ {
+		lossVertex[d] += g * wContext[d]
+	}
+	for d := 0; d < dim; d++ {
+		lossContext[d] += g * wVertex[d]
+	}
+
+	return true
+}
